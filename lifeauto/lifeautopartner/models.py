@@ -207,7 +207,7 @@ class RegistrationPartner(models.Model):
     phone_number = models.CharField(max_length=20)
 
     nationality = models.CharField(max_length=100, choices=NATIONALITY_CHOICES)
-    languages = models.JSONField(null=True)
+    languages = models.JSONField(blank=True, null=True)
     date_of_birth = models.DateField()
 
     street = models.CharField(max_length=255) 
@@ -222,7 +222,7 @@ class RegistrationPartner(models.Model):
     is_over_26 = models.BooleanField()
     has_company = models.BooleanField()
 
-    apps = models.JSONField()
+    apps = models.JSONField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

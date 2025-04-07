@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'lifeautoretail',
     'lifeautovisitpage',
     'lifeautocommersial',
+    'lifeautorent',
     'corsheaders',
     'rest_framework',
 ]

@@ -22,6 +22,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('lifeautovisitpage.urls')), 
+    path('api/', include('lifeautopartner.urls')), 
+    path('api/', include('lifeautorent.urls')), 
 
 ]
 
