@@ -142,11 +142,12 @@ JAZZMIN_SETTINGS = {
     "site_header": "LifeAuto",
     "welcome_sign": "Welcome to the LifeAuto Admin Panel",
     "copyright": "LifeAuto ",
-    # "site_logo": "../media/logo/Logo.png",
+    "site_logo": "../media/logo/logofull.png",
     "site_logo_classes": "img-circle",
     "login_logo": None,
     "show_ui_builder": True,
     "changeform_format": "collapsible",
+    "search_model": ["lifeautoretail.Car", "lifeautopartner.RegistrationPartner"],
     "icons": {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
