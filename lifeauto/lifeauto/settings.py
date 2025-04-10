@@ -116,7 +116,6 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = "Europe/Warsaw"
 
-
 USE_I18N = True
 
 USE_TZ = True
@@ -143,6 +142,73 @@ JAZZMIN_SETTINGS = {
     "site_header": "LifeAuto",
     "welcome_sign": "Welcome to the LifeAuto Admin Panel",
     "copyright": "LifeAuto ",
+    # "site_logo": "../media/logo/Logo.png",
+    "site_logo_classes": "img-circle",
+    "login_logo": None,
+    "show_ui_builder": True,
+    "changeform_format": "collapsible",
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "lifeautorent.Bike": "fa-solid fa-bicycle",
+        "lifeautorent.Car": "fa-solid fa-car",
+        "lifeautorent.EBike": "fa-solid fa-motorcycle",
+        "lifeautorent.Scooter": "fa-solid fa-person-biking",
+        "lifeautopartner.RegistrationPartner": "fa-solid fa-address-card",
+        "lifeautoretail.Car": "fa-solid fa-car",
+        "lifeautoretail.CustomerInquiry": "fa-solid fa-comments-dollar",
+        "lifeautovisitpage.Blog": "fa-solid fa-percent",
+        "lifeautovisitpage.Contact": "fa-solid fa-comment-sms",
+
+    },
+     "topmenu_links": [       
+        {"model": "auth.User"},
+        {"app": "lifeautorent"},
+        {"app": "lifeautoretail"},
+        {"app": "lifeautovisitpage"},
+        {"app": "lifeautopartner"},
+        {"app": "lifeautocommersial"},
+        {"app": "lifeautoimport"},
+        {"name": "IT Support", "url": "https://wa.link/o8c11d", "new_window": True},
+    ],
+    "welcome_sign": "Welcome to the LifeAuto Admin Panel",
+
+    "custom_css": "../media/logo/custom.css",
+    "custom_js": "../media/logo/custom.js",
+}
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": True,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-warning",
+    "accent": "accent-warning",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-warning",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "footer_fixed": True,
+    "theme": "darkly",
+    "dark_mode_theme": "superhero",
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-outline-success"
+    },
+    "actions_sticky_top": False
 }
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB

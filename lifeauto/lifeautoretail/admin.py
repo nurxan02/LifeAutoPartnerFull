@@ -2,6 +2,11 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import Car, CarImage, CustomerInquiry
 
+
+admin.site.site_header = "LifeAuto Admin"
+admin.site.site_title = "LifeAuto Admin"
+admin.site.index_title = "LifeAuto Admin"
+
 class CarImageInline(admin.TabularInline):
     model = CarImage
     extra = 1
