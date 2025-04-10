@@ -12,7 +12,6 @@ if (versionDiv) {
 const brandText = document.querySelector(".brand-text.font-weight-light");
 
 if (brandText) {
-  // Remove the light class and add bold class
   brandText.classList.remove("font-weight-light");
   brandText.classList.add("font-weight-bold");
 }

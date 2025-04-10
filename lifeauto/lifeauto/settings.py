@@ -156,7 +156,7 @@ JAZZMIN_SETTINGS = {
         "lifeautorent.EBike": "fa-solid fa-motorcycle",
         "lifeautorent.Scooter": "fa-solid fa-person-biking",
         "lifeautopartner.RegistrationPartner": "fa-solid fa-address-card",
-        "lifeautoretail.Car": "fa-solid fa-car",
+        "lifeautoretail.Car": "fa-solid fa-car-side",
         "lifeautoretail.CustomerInquiry": "fa-solid fa-comments-dollar",
         "lifeautovisitpage.Blog": "fa-solid fa-percent",
         "lifeautovisitpage.Contact": "fa-solid fa-comment-sms",

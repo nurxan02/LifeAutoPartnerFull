@@ -25,3 +25,13 @@
 .btn-info:hover {
   background-color: #b49d2a !important;
 }
+.dropdown-item:hover {
+  background-color: #b49d2a !important;
+  color: white !important;
+}
+.collapsible-header {
+  transition: 0.2s !important;
+}
+.collapsible-header:hover {
+  background-color: #f68e11 !important;
+}
