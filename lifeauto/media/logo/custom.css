@@ -1,6 +1,11 @@
 .brand-link {
   transition: 0.1s !important;
 }
+
+.brand-link img {
+  opacity: 1 !important;
+  box-shadow: 0px 0px 0px 0px #000000 !important;
+}
 .brand-text {
   transition: 0.1s !important;
 }
@@ -35,7 +40,6 @@
 .collapsible-header:hover {
   background-color: #f68e11 !important;
 }
-.brand-image {
-  opacity: 1 !important;
-  box-shadow: 0px 0px 0px 0px #000000 !important;
+.navHeaderCustom {
+  color: #f68e11 !important;
 }

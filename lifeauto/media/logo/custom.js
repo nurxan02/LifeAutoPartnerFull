@@ -15,3 +15,12 @@ if (brandText) {
   brandText.classList.remove("font-weight-light");
   brandText.classList.add("font-weight-bold");
 }
+(function () {
+  const headers = document.querySelectorAll("li.nav-header");
+
+  headers.forEach((header) => {
+    if (header.textContent.trim()) {
+      header.classList.add("navHeaderCustom");
+    }
+  });
+})();
