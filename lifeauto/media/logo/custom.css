@@ -18,7 +18,7 @@
 .btn:hover {
   scale: 1.05 !important;
   border-color: #ffffff !important;
-  color: white !important;
+  /* color: white !important; */
   box-shadow: 0px 0px 20px -10px #000000 !important;
 }
 .btn-outline-success:hover {
@@ -42,4 +42,10 @@
 }
 .navHeaderCustom {
   color: #f68e11 !important;
+}
+#id_user_permissions_from option {
+  color: #000000 !important;
+}
+a.dropdown-item.active {
+  color: #ffffff !important;
 }

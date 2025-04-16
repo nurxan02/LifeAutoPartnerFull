@@ -146,7 +146,6 @@ JAZZMIN_SETTINGS = {
     "site_logo_classes": "img-circle",
     "login_logo": None,
     "show_ui_builder": True,
-    "changeform_format": "collapsible",
     "search_model": ["lifeautoretail.Car", "lifeautopartner.RegistrationPartner"],
     "icons": {
         "auth": "fas fa-users-cog",
@@ -161,6 +160,7 @@ JAZZMIN_SETTINGS = {
         "lifeautoretail.CustomerInquiry": "fa-solid fa-comments-dollar",
         "lifeautovisitpage.Blog": "fa-solid fa-percent",
         "lifeautovisitpage.Contact": "fa-solid fa-comment-sms",
+        "lifeautoimport.ImportedCar": "fa-solid fa-anchor",
 
     },
      "topmenu_links": [       
@@ -199,8 +199,8 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
     "footer_fixed": True,
-    "theme": "darkly",
-    "dark_mode_theme": "superhero",
+    "theme": "solar",
+    "dark_mode_theme": "slate",
     "button_classes": {
         "primary": "btn-primary",
         "secondary": "btn-secondary",
