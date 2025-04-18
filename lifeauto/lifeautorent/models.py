@@ -1,128 +1,119 @@
 from django.db import models
 from django.core.validators import RegexValidator, FileExtensionValidator
 from datetime import date
-import uuid
+import uuid,os
 from django.db.models import Sum
 
 
 def generate_sku(prefix):
     unique_id = uuid.uuid4().hex[:8].upper()  
     return f"{prefix}-{unique_id}"
+def rental_product_image_path(instance, filename):
+    ext = filename.split('.')[-1]
+    new_filename = f"{instance.name}_{uuid.uuid4().hex[:8]}.{ext}"
 
-class EBike(models.Model):
+    return os.path.join('rental_vehicle/', new_filename)
+class RentalProduct(models.Model):
     name = models.CharField(max_length=100)
     brand = models.CharField(max_length=100)
+    price_per_week = models.DecimalField(max_digits=10, decimal_places=2)
+    is_active = models.BooleanField(default=True, verbose_name="Busy", 
+                                  help_text="Is the product currently active?")
+    image = models.ImageField(upload_to=rental_product_image_path, null=True, blank=True, 
+                            help_text="Upload an image of the product")
+    client = models.ForeignKey(
+        'Client',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='%(class)s',
+        verbose_name="Client"
+    )
+    sku = models.CharField(max_length=50, unique=True, blank=True, 
+                         verbose_name="SKU Code")
+    
+    class Meta:
+        abstract = True
+    
+    def save(self, *args, **kwargs):
+        if not self.sku:
+            prefix = self.get_sku_prefix()
+            if prefix == "C" and hasattr(self, 'sign_number'):
+                self.sku = f"C-{self.sign_number}"
+            else:
+                unique_id = uuid.uuid4().hex[:8].upper()  
+                self.sku = f"{prefix}-{unique_id}"
+        super().save(*args, **kwargs)
+    
+    def get_sku_prefix(self):
+        raise NotImplementedError("Subclasses must implement this method")
+    
+    def __str__(self):
+        return self.name
+
+class EBike(RentalProduct):
     battery_capacity = models.FloatField(help_text="Battery capacity in kWh")
     max_speed = models.FloatField(help_text="Maximum speed in km/h")
-    price_per_week = models.DecimalField(max_digits=10, decimal_places=2)
-    is_active = models.BooleanField(default=True,verbose_name="Busy", help_text="Is the e-bike currently active?")
-    image = models.ImageField(upload_to='ebikes/', null=True, blank=True, help_text="Upload an image of the e-bike")
-    #Client
-    client = models.ForeignKey(
-        'Client',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='ebike',
-        verbose_name="Client"
-    )
-    sku = models.CharField(max_length=50, unique=True, blank=True, verbose_name="SKU Code")
-    def save(self, *args, **kwargs):
-        if not self.sku:  
-            self.sku = generate_sku("EB")
-        super().save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name = "E-Bike"
+        verbose_name_plural = "E-Bikes"
+    
+    def get_sku_prefix(self):
+        return "EB"
 
-    def __str__(self):
-        return self.name
-
-
-class Bike(models.Model):
-    name = models.CharField(max_length=100)
-    brand = models.CharField(max_length=100)
+class Bike(RentalProduct):
     gear_count = models.IntegerField()
-    price_per_week = models.DecimalField(max_digits=10, decimal_places=2)
-    is_active = models.BooleanField(default=True,verbose_name="Busy", help_text="Is the bike currently active?")
-    image = models.ImageField(upload_to='bikes/', null=True, blank=True, help_text="Upload an image of the bike")
-    #Client
-    client = models.ForeignKey(
-        'Client',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='bike',
-        verbose_name="Client"
-    )
-    sku = models.CharField(max_length=50, unique=True, blank=True, verbose_name="SKU Code")
-    def save(self, *args, **kwargs):
-        if not self.sku:  
-            self.sku = generate_sku("BI")
-        super().save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name = "Bike"
+        verbose_name_plural = "Bikes"
+    
+    def get_sku_prefix(self):
+        return "BI"
 
-    def __str__(self):
-        return self.name
-
-
-class Scooter(models.Model):
-    name = models.CharField(max_length=100)
-    brand = models.CharField(max_length=100)
+class Scooter(RentalProduct):
     max_speed = models.FloatField(help_text="Maximum speed in km/h")
-    price_per_week = models.DecimalField(max_digits=10, decimal_places=2)
-    is_active = models.BooleanField(default=True,verbose_name="Busy", help_text="Is the scooter currently active?")
-    image = models.ImageField(upload_to='scooters/', null=True, blank=True, help_text="Upload an image of the scooter")
-    #Client
-    client = models.ForeignKey(
-        'Client',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='scooter',
-        verbose_name="Client"
-    )
-    sku = models.CharField(max_length=50, unique=True, blank=True, verbose_name="SKU Code")
-    def save(self, *args, **kwargs):
-        if not self.sku:  
-            self.sku = generate_sku("SC")
-        super().save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name = "Scooter"
+        verbose_name_plural = "Scooters"
+    
+    def get_sku_prefix(self):
+        return "SC"
 
-    def __str__(self):
-        return self.name
-
-
-class Car(models.Model):
+class Car(RentalProduct):
     CATEGORY_CHOICES = [
         ('delivery', 'For Delivery'),
         ('taxi', 'For Taxi'),
     ]
-
-    name = models.CharField(max_length=100, help_text="Name of the car model")
-    brand = models.CharField(max_length=100, help_text="Name of the car brand")
-    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, verbose_name="Category", help_text="Category of the car: Delivery/Taxi")
+    
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, 
+                              verbose_name="Category", 
+                              help_text="Category of the car: Delivery/Taxi")
     seating_capacity = models.IntegerField(help_text="Number of seats")
-    price_per_week = models.DecimalField(max_digits=10, decimal_places=2, help_text="Weekly rental price")
-    is_active = models.BooleanField(default=True, verbose_name="Busy", help_text="Is the car currently busy?")
-    image = models.ImageField(upload_to='cars/', null=True, blank=True, help_text="Upload an image of the car")
-    #Client
-    client = models.ForeignKey(
-        'Client',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='car',
-        verbose_name="Client",
-        help_text="Client who rented the car"
-    )
-    taxi_license_number = models.CharField(max_length=100, default="N/A", null=False, verbose_name="Taxi License Number",help_text="Taxi License number of the car")
-    sign_number = models.CharField(max_length=100, null=False, verbose_name="Sign Number",help_text="Sign Number of the car")
-    sku = models.CharField(max_length=50, unique=True, blank=True, verbose_name="SKU Code", help_text="Unique SKU code for the car")
+    taxi_license_number = models.CharField(max_length=100, default="N/A", 
+                                         null=False, 
+                                         verbose_name="Taxi License Number",
+                                         help_text="Taxi License number of the car")
+    sign_number = models.CharField(max_length=100, null=False, 
+                                 verbose_name="Sign Number",
+                                 help_text="Sign Number of the car")
+    
+    class Meta:
+        verbose_name = "Car"
+        verbose_name_plural = "Cars"
+    
     def save(self, *args, **kwargs):
         if not self.client:
             self.is_active = False
         if self.sign_number:
             self.sign_number = self.sign_number.upper()
-        if not self.sku:  
-            self.sku = f"C-{self.sign_number}"
         super().save(*args, **kwargs)
-
+    
+    def get_sku_prefix(self):
+        return "C"
+    
     def __str__(self):
         return f"{self.name} ({self.get_category_display()})"
 
@@ -330,22 +321,25 @@ class Client(models.Model):
     date_of_birth = models.DateField(default=date(2000, 1, 1), verbose_name="Date of Birth")
     email = models.EmailField(unique=True,verbose_name="Email")
     country_code = models.CharField(max_length=10, verbose_name="Country Index", default="+48")
-    phone_number = models.CharField(max_length=20, verbose_name="Phone Number",   blank=True,
-    null=True,    validators=[
-        RegexValidator(
-            regex=r'^\d{9,15}$',
-            message="Phone number must contain only digits and be between 9 and 15 characters."
-        )
-    ])
+    phone_number = models.CharField(max_length=20, verbose_name="Phone Number", blank=True,
+                                   null=True, validators=[
+                                       RegexValidator(
+                                           regex=r'^\d{9,15}$',
+                                           message="Phone number must contain only digits and be between 9 and 15 characters."
+                                       )
+                                   ])
     CHOICE_STATUS_CLIENT = (
-    ('New', 'New'),
-    ('Active', 'Active'),
-    ('Inactive', 'Inactive'),
-    ('Blocked', 'Blocked'),
-    ('Deleted', 'Deleted'),
+        ('New', 'New'),
+        ('Active', 'Active'),
+        ('Inactive', 'Inactive'),
+        ('Blocked', 'Blocked'),
+        ('Deleted', 'Deleted'),
     )
-    status = models.CharField(max_length=100, verbose_name="Status", choices=CHOICE_STATUS_CLIENT, default="New", null=True, blank=True)
-    nationality = models.CharField(max_length=100, choices=NATIONALITY_CHOICES, default="Not Specified", null=True, blank=True)
+    status = models.CharField(max_length=100, verbose_name="Status", 
+                            choices=CHOICE_STATUS_CLIENT, default="New", 
+                            null=True, blank=True)
+    nationality = models.CharField(max_length=100, choices=NATIONALITY_CHOICES, 
+                                 default="Not Specified", null=True, blank=True)
     address = models.TextField(blank=True, verbose_name="Address")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
@@ -358,21 +352,25 @@ class Client(models.Model):
         return total if total else 0 
 
     total_payments.short_description = "Total Payments" 
+    
     def total_penalties(self):
         total = self.Penalties.aggregate(Sum('penalty_fee'))['penalty_fee__sum']
         return total if total else 0
+    
     total_penalties.short_description = "Total Penalties"
+    
     def rented_vehicles(self):
         vehicles = []
-        if self.car.exists():
+        if hasattr(self, 'car') and self.car.exists():
             vehicles.extend([f"Car: {car.brand} {car.name}-{car.sign_number}" for car in self.car.all()])
-        if self.bike.exists():
+        if hasattr(self, 'bike') and self.bike.exists():
             vehicles.extend([f"Bike: {bike.name}" for bike in self.bike.all()])
-        if self.scooter.exists():
+        if hasattr(self, 'scooter') and self.scooter.exists():
             vehicles.extend([f"Scooter: {scooter.name}" for scooter in self.scooter.all()])
-        if self.ebike.exists():
+        if hasattr(self, 'ebike') and self.ebike.exists():
             vehicles.extend([f"EBike: {ebike.name}" for ebike in self.ebike.all()])
         return ", ".join(vehicles) if vehicles else "No vehicles rented Right Now."
+    
     rented_vehicles.short_description = "Rented Vehicles"
 
     def __str__(self):
@@ -395,7 +393,7 @@ class ClientDocument(models.Model):
         validators=[FileExtensionValidator(['pdf', 'jpg', 'jpeg', 'png'])],
         verbose_name="Document"
     )
-    expire=models.BooleanField(default=False, verbose_name="Expire?")
+    expire = models.BooleanField(default=False, verbose_name="Expire?")
     description = models.CharField(max_length=255, blank=True, verbose_name="Description")
     uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name="Uploaded At")
 
@@ -407,26 +405,35 @@ class ClientDocument(models.Model):
         return f"Document for {self.client.first_name} {self.client.last_name}"
     
 class ClientPayments(models.Model):
-    client = models.ForeignKey('Client',on_delete=models.CASCADE, related_name='Payments',verbose_name="Client")
-    description = models.CharField(max_length=255, blank=True, default="Weekly rental fee", verbose_name="Description")
-    payment_interests= models.CharField(max_length=255, blank=True, verbose_name="Payment Interets")
+    client = models.ForeignKey('Client', on_delete=models.CASCADE, 
+                             related_name='Payments', verbose_name="Client")
+    description = models.CharField(max_length=255, blank=True, 
+                                 default="Weekly rental fee", 
+                                 verbose_name="Description")
+    payment_interests = models.CharField(max_length=255, blank=True, 
+                                       verbose_name="Payment Interests")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     refundable = models.BooleanField(default=False, verbose_name="Refundable")
 
     class Meta:
         verbose_name = "Client Payment Interests"
         verbose_name_plural = "Client Payment Interests"
+    
     def __str__(self):
         return f"Payment for {self.client.first_name} {self.client.last_name}"
     
 class ClientPenalties(models.Model):
-    client = models.ForeignKey('Client',on_delete=models.CASCADE, related_name='Penalties',verbose_name="Client")
-    description = models.CharField(max_length=255, blank=True, verbose_name="Description")
-    penalty_fee= models.CharField(max_length=255, blank=True, verbose_name="Penalty Interests")
+    client = models.ForeignKey('Client', on_delete=models.CASCADE, 
+                             related_name='Penalties', verbose_name="Client")
+    description = models.CharField(max_length=255, blank=True, 
+                                 verbose_name="Description")
+    penalty_fee = models.CharField(max_length=255, blank=True, 
+                                 verbose_name="Penalty Interests")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
 
     class Meta:
         verbose_name = "Client Penalty"
         verbose_name_plural = "Client Penalties"
+    
     def __str__(self):
         return f"Penalty for {self.client.first_name} {self.client.last_name}"

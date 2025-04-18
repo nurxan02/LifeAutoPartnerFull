@@ -22,25 +22,25 @@ def export_to_excel(modeladmin, request, queryset):
         headers = ['ID', 'Name', 'Brand', 'Battery Capacity (kWh)', 'Max Speed (km/h)', 
                   'Price Per Week', 'Is Active','Client', 'Image Path']
         fields = ['id', 'name', 'brand', 'battery_capacity', 'max_speed', 
-                 'price_per_week', 'is_active', 'image']
+                 'price_per_week', 'is_active','client', 'image']
     
     elif model_name == 'Bike':
         headers = ['ID', 'Name', 'Brand', 'Gear Count', 'Price Per Week', 
                   'Is Active','Client', 'Image Path']
         fields = ['id', 'name', 'brand', 'gear_count', 'price_per_week', 
-                 'is_active', 'image']
+                 'is_active','client', 'image']
     
     elif model_name == 'Scooter':
         headers = ['ID', 'Name', 'Brand', 'Max Speed (km/h)', 'Price Per Week', 
                   'Is Active', 'Client', 'Image Path']
         fields = ['id', 'name', 'brand', 'max_speed', 'price_per_week', 
-                 'is_active', 'image']
+                 'is_active','client', 'image']
     
     elif model_name == 'Car':
         headers = ['ID', 'Name', 'Brand', 'Category', 'Seating Capacity', 
                   'Price Per Week', 'Is Active','Client', 'Image Path']
         fields = ['id', 'name', 'brand', 'get_category_display', 'seating_capacity', 
-                 'price_per_week', 'is_active', 'image']
+                 'price_per_week', 'is_active','client', 'image']
     
     ws.append(headers)
     
