@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -124,25 +125,28 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/staticfiles/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 CORS_ALLOW_ALL_ORIGINS = True
-import os
+
 
 MEDIA_URL = '/media/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 JAZZMIN_SETTINGS = {
+    "custom_css": "logo/custom.css",
+    "custom_js": "logo/custom.js",
     "site_title": "LifeAuto Admin",
     "site_header": "LifeAuto",
     "welcome_sign": "Welcome to the LifeAuto Admin Panel",
     "copyright": "LifeAuto ",
-    "site_logo": "../media/logo/logofull.png",
+    "site_logo": "logo/logofull.png",
     "site_logo_classes": "img-circle",
     "login_logo": None,
     "show_ui_builder": True,
@@ -155,12 +159,14 @@ JAZZMIN_SETTINGS = {
         "lifeautorent.Car": "fa-solid fa-car",
         "lifeautorent.EBike": "fa-solid fa-motorcycle",
         "lifeautorent.Scooter": "fa-solid fa-person-biking",
+        "lifeautorent.Client": "fa-solid fa-address-card",
         "lifeautopartner.RegistrationPartner": "fa-solid fa-address-card",
         "lifeautoretail.Car": "fa-solid fa-car-side",
         "lifeautoretail.CustomerInquiry": "fa-solid fa-comments-dollar",
         "lifeautovisitpage.Blog": "fa-solid fa-percent",
         "lifeautovisitpage.Contact": "fa-solid fa-comment-sms",
         "lifeautoimport.ImportedCar": "fa-solid fa-anchor",
+        "lifeautoimport.Client": "fa-solid fa-address-card",
 
     },
      "topmenu_links": [       
@@ -175,8 +181,7 @@ JAZZMIN_SETTINGS = {
     ],
     "welcome_sign": "Welcome to the LifeAuto Admin Panel",
 
-    "custom_css": "../media/logo/custom.css",
-    "custom_js": "../media/logo/custom.js",
+
 }
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
@@ -198,9 +203,10 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_compact_style": False,
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
+    "sidebar_nav_small_text": True,
     "footer_fixed": True,
     "theme": "solar",
-    "dark_mode_theme": "slate",
+    "dark_mode_theme": "SOLAR",
     "button_classes": {
         "primary": "btn-primary",
         "secondary": "btn-secondary",

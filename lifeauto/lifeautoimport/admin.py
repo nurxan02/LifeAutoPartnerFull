@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import ImportedCar, CarImage, CarDocument
+from .models import ImportedCar, CarImage, CarDocument,Client
 from django.utils.html import format_html
+from decimal import Decimal
+from django.db import models
 
 class CarImageInline(admin.TabularInline):
     model = CarImage
@@ -27,18 +29,17 @@ class CarDocumentInline(admin.TabularInline):
 
 @admin.register(ImportedCar)
 class ImportedCarAdmin(admin.ModelAdmin):
-    list_display = ('brand', 'model', 'year', 'vin', 'status', 'total_cost','selling_price','preview_image')
+    list_display = ('brand', 'model', 'year', 'vin', 'status', 'total_cost','selling_price','preview_image','client','key','condition_type')
     list_filter = ('status', 'brand', 'year')
-    search_fields = ('vin', 'brand', 'model')
+    search_fields = ('vin', 'brand', 'model','client__first_name', 'client__last_name')
     inlines = [CarImageInline, CarDocumentInline]
     actions = ['calculate_total_net_profit','mark_as_arrived']
     fieldsets = (
         ('Basic Information', {
-            'fields': ('brand', 'model', 'year', 'vin', 'kilometer', 'color', 
-                      'fuel_type', 'transmission', 'engine_size')
+            'fields': ('client','brand', 'model', 'year', 'vin', 'kilometer', 'color', 'fuel_type', 'transmission', 'engine_size','key','condition_type')
         }),
         ('Auction Details', {
-            'fields': ('auction_house', 'auction_date', 'auction_location',
+            'fields': ('auction_country','auction_house', 'auction_date', 'auction_location',
                       'auction_price', 'auction_fee', 'purchase_date')
         }),
         ('Shipping & Logistics', {
@@ -62,13 +63,13 @@ class ImportedCarAdmin(admin.ModelAdmin):
 
     def net_profit_display(self, obj):
         return obj.net_profit
-    net_profit_display.short_description = "Net Profit ($)"
+    net_profit_display.short_description = "Net Profit (zł)"
 
     def calculate_total_net_profit(self, request, queryset):
 
         total_net_profit = sum(car.net_profit for car in queryset)
-        self.message_user(request, f"Seçili arabaların toplam net karı: {total_net_profit} $")
-    calculate_total_net_profit.short_description = "Sum Total Net Profit of Selected Cars"
+        self.message_user(request, f"Net Profit of Selected Cars: {total_net_profit} zł")
+   
     def get_actions(self, request):
         actions = super().get_actions(request)
         if not request.user.has_perm('lifeautoimport.view_net_profit'):
@@ -76,7 +77,7 @@ class ImportedCarAdmin(admin.ModelAdmin):
                 del actions['calculate_total_net_profit']
         return actions
     def get_queryset(self, request):
-        # Request nesnesini saklamak için
+       
         self.request = request
         return super().get_queryset(request)
     def mark_as_arrived(self, request, queryset):
@@ -87,30 +88,12 @@ class ImportedCarAdmin(admin.ModelAdmin):
         if primary_image and primary_image.image:
             return format_html('<img src="{}" height="100" style="border-radius: 5px;" />', primary_image.image.url)
         return "-"
-    preview_image.short_description = "Preview"  
+    preview_image.short_description = "Preview"
 
-# @admin.register(CarImage)
-# class CarImageAdmin(admin.ModelAdmin):
-#     list_display = ('car', 'image_type', 'preview_image', 'uploaded_at')
-#     list_filter = ('image_type',)
-#     readonly_fields = ('preview_image',)
-    
-#     def preview_image(self, obj):
-#         if obj.image:
-#             from django.utils.html import format_html
-#             return format_html('<img src="{}" height="100" />', obj.image.url)
-#         return "-"
-#     preview_image.short_description = "Preview"
-
-# @admin.register(CarDocument)
-# class CarDocumentAdmin(admin.ModelAdmin):
-#     list_display = ('car', 'document_type', 'document_link', 'uploaded_at')
-#     list_filter = ('document_type',)
-#     readonly_fields = ('document_link',)
-    
-#     def document_link(self, obj):
-#         if obj.document:
-#             from django.utils.html import format_html
-#             return format_html('<a href="{}" target="_blank">View Document</a>', obj.document.url)
-#         return "-"
-#     document_link.short_description = "Document Link"
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email', 'phone_number', 'created_at','is_contacted', 'is_verified')
+    search_fields = ('first_name', 'last_name', 'email', 'phone_number')
+    list_filter = ('is_verified', 'is_contacted')
+    list_editable=('is_contacted', 'is_verified')
+    ordering = ('-created_at',) 
