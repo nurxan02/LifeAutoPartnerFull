@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/', include('lifeautopartner.urls')), 
     path('api/', include('lifeautorent.urls')), 
     path('api/', include('lifeautoretail.urls')), 
+    path('api/', include('lifeautoimport.urls')), 
 
 ]
 

@@ -4,20 +4,8 @@ from rest_framework.response import Response
 from rest_framework import generics
 # from django.shortcuts import render
 # from rest_framework import viewsets
-from .models import Blog,  Contact
-from .serializers import BlogSerializer,  ContactSerializer
-
-# class BlogViewSet(viewsets.ModelViewSet):
-#     queryset = Blog.objects.all()
-#     serializer_class = BlogSerializer
-
-# class BlogImageViewSet(viewsets.ModelViewSet):
-#     queryset = BlogImage.objects.all()
-#     serializer_class = BlogImageSerializer
-
-# class ContactViewSet(viewsets.ModelViewSet):
-#     queryset = Contact.objects.all()
-#     serializer_class = ContactSerializer
+from .models import Blog, Contact, ImportedVehicleAdvertisament, VehicleAdvertisementImage, CustomerInquiryImport
+from .serializers import BlogSerializer, ContactSerializer, ImportedVehicleAdvertisamentSerializer, VehicleAdvertisementImageSerializer, CustomerInquiryImportSerializer
 
 
 class ContactCreateView(generics.CreateAPIView):
@@ -41,3 +29,16 @@ class BlogDetailView(APIView):
         blog = get_object_or_404(Blog, pk=pk)  
         serializer = BlogSerializer(blog)
         return Response(serializer.data)
+
+class ImportedVehicleAdvertisamentView(generics.ListCreateAPIView):
+    queryset = ImportedVehicleAdvertisament.objects.all()
+    serializer_class = ImportedVehicleAdvertisamentSerializer
+
+class VehicleAdvertisementImageView(generics.ListCreateAPIView):
+    queryset = VehicleAdvertisementImage.objects.all()
+    serializer_class = VehicleAdvertisementImageSerializer
+
+class CustomerInquiryImportView(generics.ListCreateAPIView):
+    queryset = CustomerInquiryImport.objects.all()
+    serializer_class = CustomerInquiryImportSerializer
+
