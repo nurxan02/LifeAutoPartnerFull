@@ -140,6 +140,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 JAZZMIN_SETTINGS = {
+
     "custom_css": "logo/custom.css",
     "custom_js": "logo/custom.js",
     "site_title": "LifeAuto Admin",
@@ -148,8 +149,8 @@ JAZZMIN_SETTINGS = {
     "copyright": "LifeAuto ",
     "site_logo": "logo/logofull.png",
     "site_logo_classes": "img-circle",
-    "login_logo": None,
-    "show_ui_builder": True,
+    # "login_logo": None,
+    "show_ui_builder": False,
     "search_model": ["lifeautoretail.Car", "lifeautopartner.RegistrationPartner"],
     "icons": {
         "auth": "fas fa-users-cog",
@@ -167,6 +168,8 @@ JAZZMIN_SETTINGS = {
         "lifeautovisitpage.Contact": "fa-solid fa-comment-sms",
         "lifeautoimport.ImportedCar": "fa-solid fa-anchor",
         "lifeautoimport.Client": "fa-solid fa-address-card",
+        "lifeautovisitpage.ImportedVehicleAdvertisament": "fa-solid fa-shop",
+        "lifeautovisitpage.CustomerInquiryImport": "fa-solid fa-bell",
 
     },
      "topmenu_links": [       
@@ -180,6 +183,7 @@ JAZZMIN_SETTINGS = {
         {"name": "IT Support", "url": "https://wa.link/o8c11d", "new_window": True},
     ],
     "welcome_sign": "Welcome to the LifeAuto Admin Panel",
+
 
 
 }

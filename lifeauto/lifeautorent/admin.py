@@ -68,7 +68,7 @@ export_to_excel.short_description = "Export to Excel"
 
 @admin.register(EBike)
 class EBikeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'battery_capacity', 'max_speed', 'price_per_week', 'is_active', 'image_preview')
+    list_display = ('name', 'brand','sku', 'battery_capacity', 'max_speed', 'price_per_week', 'is_active', 'image_preview')
     search_fields = ('name', 'brand')
     list_filter = ('is_active', )
     list_editable = ('is_active', )
@@ -84,7 +84,7 @@ class EBikeAdmin(admin.ModelAdmin):
 
 @admin.register(Bike)
 class BikeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'gear_count', 'price_per_week', 'is_active', 'image_preview')
+    list_display = ('name', 'brand','sku', 'gear_count', 'price_per_week', 'is_active', 'image_preview')
     search_fields = ('name', 'brand')
     list_filter = ('is_active', )
     list_editable = ('is_active', )
@@ -100,9 +100,9 @@ class BikeAdmin(admin.ModelAdmin):
 
 @admin.register(Scooter)
 class ScooterAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'max_speed', 'price_per_week', 'is_active', 'image_preview')
+    list_display = ('name', 'brand','sku', 'max_speed', 'price_per_week', 'is_active', 'image_preview')
     search_fields = ('name', 'brand')
-    list_filter = ('is_active', )
+    list_filter = ('status','is_active', )
     list_editable = ('is_active', )
     readonly_fields = ('image_preview', 'sku',)
     actions = [export_to_excel]
@@ -116,7 +116,7 @@ class ScooterAdmin(admin.ModelAdmin):
 
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'category', 'seating_capacity', 'price_per_week', 'is_active', 'image_preview')
+    list_display = ('name', 'brand','sku', 'category', 'seating_capacity', 'price_per_week', 'is_active', 'image_preview')
     search_fields = ('name', 'brand', 'category')
     list_filter = ('is_active', 'category')
     list_editable = ('is_active', )

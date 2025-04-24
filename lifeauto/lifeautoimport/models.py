@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 from datetime import date
 from django.core.validators import RegexValidator
+from PIL import Image
+import os
+from django.core.files.base import ContentFile
 
 class ImportedCar(models.Model):
     # masin deyerler
@@ -190,6 +193,11 @@ def car_document_path(instance, filename):
     new_filename = f"{instance.car.brand}+{instance.car.model}+s{uuid.uuid4().hex[:4]}.{ext}"
     return f'importcars/{instance.car.vin}/documents/{new_filename}'
 
+def advertisement_image_path(instance, filename):
+    ext = filename.split('.')[-1]
+    new_filename = f"{instance.id}_{uuid.uuid4().hex[:8]}.{ext}"
+    return os.path.join('advertisements/', new_filename)
+
 class CarImage(models.Model):
     car = models.ForeignKey(ImportedCar, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to=car_image_path, verbose_name="Image")
@@ -204,7 +212,11 @@ class CarImage(models.Model):
         ('other', 'Other'),
     ], verbose_name="Image Type")
     uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name="Uploaded At")
-    
+    def delete(self, *args, **kwargs):
+        # Delete the image file from the file system
+        if self.image and os.path.exists(self.image.path):
+            os.remove(self.image.path)
+        super().delete(*args, **kwargs)
     class Meta:
         verbose_name = "Car Image"
         verbose_name_plural = "Car Images"
@@ -436,7 +448,7 @@ class Client(models.Model):
     date_of_birth = models.DateField(default=date(2000, 1, 1), verbose_name="Date of Birth")
     email = models.EmailField(unique=True,verbose_name="Email")
 
-    country_code = models.CharField(max_length=10, verbose_name="Country Index", default="+48")
+    country_code = models.CharField(max_length=10, verbose_name="Country Index", default="+48", null=True, blank=True)
     phone_number = models.CharField(max_length=20, verbose_name="Phone Number",   blank=True,
     null=True,    validators=[
         RegexValidator(
@@ -448,8 +460,6 @@ class Client(models.Model):
     address = models.TextField(blank=True, verbose_name="Address")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
-    message= models.TextField(blank=True, verbose_name="Message")
-    is_contacted = models.BooleanField(default=False, verbose_name="Is Contacted")
     is_verified = models.BooleanField(default=False, verbose_name="Is Verified")
     
     def __str__(self):

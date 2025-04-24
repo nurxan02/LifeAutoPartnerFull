@@ -13,7 +13,18 @@ def rental_product_image_path(instance, filename):
     new_filename = f"{instance.name}_{uuid.uuid4().hex[:8]}.{ext}"
 
     return os.path.join('rental_vehicle/', new_filename)
+
 class RentalProduct(models.Model):
+    CHOICE_STATUS_VEHICLE = (
+        ('New', 'New'),
+        ('Active', 'Active'),
+        ('Inactive', 'Inactive'),
+        ('Blocked', 'Blocked'),
+        ('Deleted', 'Deleted'),
+    )
+    status = models.CharField(max_length=100, verbose_name="Status", 
+                            choices=CHOICE_STATUS_VEHICLE, default="New", 
+                            null=True, blank=True)
     name = models.CharField(max_length=100)
     brand = models.CharField(max_length=100)
     price_per_week = models.DecimalField(max_digits=10, decimal_places=2)
@@ -31,7 +42,6 @@ class RentalProduct(models.Model):
     )
     sku = models.CharField(max_length=50, unique=True, blank=True, 
                          verbose_name="SKU Code")
-    
     class Meta:
         abstract = True
     
@@ -47,6 +57,11 @@ class RentalProduct(models.Model):
     
     def get_sku_prefix(self):
         raise NotImplementedError("Subclasses must implement this method")
+    
+    def delete(self, *args, **kwargs):
+        if self.image and self.image.storage.exists(self.image.name):
+            self.image.storage.delete(self.image.name)
+        super().delete(*args, **kwargs)
     
     def __str__(self):
         return self.name
@@ -320,7 +335,7 @@ class Client(models.Model):
     last_name = models.CharField(max_length=100, verbose_name="Last Name")
     date_of_birth = models.DateField(default=date(2000, 1, 1), verbose_name="Date of Birth")
     email = models.EmailField(unique=True,verbose_name="Email")
-    country_code = models.CharField(max_length=10, verbose_name="Country Index", default="+48")
+    country_code = models.CharField(max_length=10, verbose_name="Country Index", default="+48", blank=True,null=True)
     phone_number = models.CharField(max_length=20, verbose_name="Phone Number", blank=True,
                                    null=True, validators=[
                                        RegexValidator(
@@ -391,7 +406,9 @@ class ClientDocument(models.Model):
     document = models.FileField(
         upload_to=client_document_path,
         validators=[FileExtensionValidator(['pdf', 'jpg', 'jpeg', 'png'])],
-        verbose_name="Document"
+        verbose_name="Document",
+        null=True,
+        blank=True,
     )
     expire = models.BooleanField(default=False, verbose_name="Expire?")
     description = models.CharField(max_length=255, blank=True, verbose_name="Description")
@@ -410,8 +427,10 @@ class ClientPayments(models.Model):
     description = models.CharField(max_length=255, blank=True, 
                                  default="Weekly rental fee", 
                                  verbose_name="Description")
-    payment_interests = models.CharField(max_length=255, blank=True, 
-                                       verbose_name="Payment Interests")
+    payment_interests = models.CharField(max_length=255,  
+                                       verbose_name="Payment Interests",
+        null=True,
+        blank=True,)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     refundable = models.BooleanField(default=False, verbose_name="Refundable")
 

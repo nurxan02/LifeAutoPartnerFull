@@ -92,8 +92,9 @@ class ImportedCarAdmin(admin.ModelAdmin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'email', 'phone_number', 'created_at','is_contacted', 'is_verified')
+    list_display = ('first_name', 'last_name', 'email', 'phone_number', 'created_at','is_verified')
     search_fields = ('first_name', 'last_name', 'email', 'phone_number')
-    list_filter = ('is_verified', 'is_contacted')
-    list_editable=('is_contacted', 'is_verified')
-    ordering = ('-created_at',) 
+    list_filter = ('is_verified',)
+    list_editable=('is_verified',)
+    ordering = ('-created_at',)
+
