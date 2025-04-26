@@ -450,6 +450,16 @@ class ClientPenalties(models.Model):
                                  verbose_name="Penalty Interests")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
 
+    CHOICE_PENALTY_STATUSES = (
+        ('Paid', 'Paid'),
+        ('Unpaid', 'Unpaid'),
+        ('Overdue', 'Overdue'),
+
+
+    )
+    status = models.CharField(max_length=100, verbose_name="Status", 
+                            choices=CHOICE_PENALTY_STATUSES, default="New", 
+                            null=True, blank=True)
     class Meta:
         verbose_name = "Client Penalty"
         verbose_name_plural = "Client Penalties"

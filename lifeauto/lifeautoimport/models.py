@@ -13,8 +13,160 @@ from django.core.files.base import ContentFile
 
 class ImportedCar(models.Model):
     # masin deyerler
-    
-    brand = models.CharField(max_length=100, verbose_name="Brand")
+    CHOICE_CAR_BRANDS = [
+    ('select', 'Select Brand'),
+    ('Abarth', 'Abarth'),
+    ('Acura', 'Acura'),
+    ('Aiways', 'Aiways'),
+    ('Alfa Romeo', 'Alfa Romeo'),
+    ('Alpine', 'Alpine'),
+    ('Aptera', 'Aptera'),
+    ('Arcfox', 'Arcfox'),
+    ('Ariel', 'Ariel'),
+    ('Aston Martin', 'Aston Martin'),
+    ('Audi', 'Audi'),
+    ('Automobili Pininfarina', 'Automobili Pininfarina'),
+    ('BAIC', 'BAIC'),
+    ('Baojun', 'Baojun'),
+    ('Bentley', 'Bentley'),
+    ('Bestune', 'Bestune'),
+    ('Bisu', 'Bisu'),
+    ('BMW', 'BMW'),
+    ('Bollinger', 'Bollinger'),
+    ('Borgward', 'Borgward'),
+    ('Brilliance Auto', 'Brilliance Auto'),
+    ('Buick', 'Buick'),
+    ('BYD', 'BYD'),
+    ('Cadillac', 'Cadillac'),
+    ('Canoo', 'Canoo'),
+    ('Caparo', 'Caparo'),
+    ('Changan', 'Changan'),
+    ('Changfeng', 'Changfeng'),
+    ('Chery', 'Chery'),
+    ('Chevrolet', 'Chevrolet'),
+    ('Chrysler', 'Chrysler'),
+    ('Citroën', 'Citroën'),
+    ('Cupra', 'Cupra'),
+    ('Dacia', 'Dacia'),
+    ('Daewoo', 'Daewoo'),
+    ('Daihatsu', 'Daihatsu'),
+    ('Datsun', 'Datsun'),
+    ('De Tomaso', 'De Tomaso'),
+    ('Denza', 'Denza'),
+    ('Detroit Electric', 'Detroit Electric'),
+    ('DFSK', 'DFSK'),
+    ('Dodge', 'Dodge'),
+    ('Dongfeng', 'Dongfeng'),
+    ('DS Automobiles', 'DS Automobiles'),
+    ('Eagle', 'Eagle'),
+    ('FAW', 'FAW'),
+    ('Ferrari', 'Ferrari'),
+    ('Fiat', 'Fiat'),
+    ('Fisker', 'Fisker'),
+    ('Ford', 'Ford'),
+    ('Foton', 'Foton'),
+    ('Geely', 'Geely'),
+    ('Genesis', 'Genesis'),
+    ('GMC', 'GMC'),
+    ('Great Wall Motors', 'Great Wall Motors'),
+    ('Haima', 'Haima'),
+    ('Haval', 'Haval'),
+    ('Hawtai', 'Hawtai'),
+    ('Hennessey', 'Hennessey'),
+    ('HiPhi', 'HiPhi'),
+    ('Honda', 'Honda'),
+    ('Hongqi', 'Hongqi'),
+    ('Hummer', 'Hummer'),
+    ('Hyundai', 'Hyundai'),
+    ('Ineos', 'Ineos'),
+    ('Infiniti', 'Infiniti'),
+    ('Iran Khodro', 'Iran Khodro'),
+    ('Isuzu', 'Isuzu'),
+    ('JAC', 'JAC'),
+    ('Jaguar', 'Jaguar'),
+    ('Jeep', 'Jeep'),
+    ('JETTA', 'JETTA'),
+    ('Jonway', 'Jonway'),
+    ('Karma', 'Karma'),
+    ('KGM (SsangYong)', 'KGM (SsangYong)'),
+    ('Kia', 'Kia'),
+    ('Koenigsegg', 'Koenigsegg'),
+    ('Krajina', 'Krajina'),
+    ('Lada', 'Lada'),
+    ('Lamborghini', 'Lamborghini'),
+    ('Lancia', 'Lancia'),
+    ('Land Rover', 'Land Rover'),
+    ('Leapmotor', 'Leapmotor'),
+    ('Lexus', 'Lexus'),
+    ('Li Auto', 'Li Auto'),
+    ('Lifan', 'Lifan'),
+    ('Lincoln', 'Lincoln'),
+    ('Lotus', 'Lotus'),
+    ('Lucid', 'Lucid'),
+    ('Lynk & Co', 'Lynk & Co'),
+    ('Mahindra', 'Mahindra'),
+    ('Maserati', 'Maserati'),
+    ('Maxus', 'Maxus'),
+    ('Maybach', 'Maybach'),
+    ('Mazda', 'Mazda'),
+    ('McLaren', 'McLaren'),
+    ('Mercedes-Benz', 'Mercedes-Benz'),
+    ('MG', 'MG'),
+    ('Mini', 'Mini'),
+    ('Mitsubishi', 'Mitsubishi'),
+    ('Morris Garages', 'Morris Garages'),
+    ('NIO', 'NIO'),
+    ('Nissan', 'Nissan'),
+    ('Ora', 'Ora'),
+    ('Opel', 'Opel'),
+    ('Pagani', 'Pagani'),
+    ('Peugeot', 'Peugeot'),
+    ('Polestar', 'Polestar'),
+    ('Pontiac', 'Pontiac'),
+    ('Porsche', 'Porsche'),
+    ('Proton', 'Proton'),
+    ('Qoros', 'Qoros'),
+    ('Ram', 'Ram'),
+    ('Ravon', 'Ravon'),
+    ('Renault', 'Renault'),
+    ('Rimac', 'Rimac'),
+    ('Roewe', 'Roewe'),
+    ('Rolls-Royce', 'Rolls-Royce'),
+    ('Rover', 'Rover'),
+    ('Saab', 'Saab'),
+    ('Saic MG', 'Saic MG'),
+    ('Samsung Motors', 'Samsung Motors'),
+    ('Seat', 'Seat'),
+    ('Seres', 'Seres'),
+    ('Shelby', 'Shelby'),
+    ('Skoda', 'Škoda'),
+    ('Smart', 'Smart'),
+    ('Soueast', 'Soueast'),
+    ('SsangYong', 'SsangYong'),
+    ('Stellantis', 'Stellantis'), # Birleşmiş bir grup, tek marka olarak değerlendirilebilir.
+    ('Subaru', 'Subaru'),
+    ('Suzuki', 'Suzuki'),
+    ('Tata', 'Tata'),
+    ('Tatra', 'Tatra'),
+    ('Tesla', 'Tesla'),
+    ('Tianjin Xiali', 'Tianjin Xiali'),
+    ('Toyota', 'Toyota'),
+    ('Trabant', 'Trabant'),
+    ('Triumph', 'Triumph'),
+    ('TVR', 'TVR'),
+    ('Vauxhall', 'Vauxhall'),
+    ('Venucia', 'Venucia'),
+    ('Volkswagen', 'Volkswagen'),
+    ('Volvo', 'Volvo'),
+    ('Weltmeister (WM Motor)', 'Weltmeister (WM Motor)'),
+    ('Wuling', 'Wuling'),
+    ('Xpeng', 'Xpeng'),
+    ('Yugo', 'Yugo'),
+    ('Zastava', 'Zastava'),
+    ('Zotye', 'Zotye'),
+    ('ZX Auto', 'ZX Auto'),
+]
+    brand = models.CharField(max_length=100, choices=CHOICE_CAR_BRANDS, default='select', verbose_name="Brand")
     model = models.CharField(max_length=100, verbose_name="Model")
     year = models.PositiveIntegerField(verbose_name="Year")
     vin = models.CharField(max_length=17, unique=True, verbose_name="VIN")
@@ -91,7 +243,7 @@ class ImportedCar(models.Model):
         ('Ukraine', 'Ukraine'),
     ]
     auction_country=models.CharField(choices=CHOICE_AUCTION_COUNTRY, max_length=50,  verbose_name="Auction Country")
-    auction_house = models.CharField(max_length=100, verbose_name="Auction House")
+    auction_house = models.CharField(max_length=100, verbose_name="Auction Company")
     auction_date = models.DateField(verbose_name="Auction Date")
     auction_location = models.CharField(max_length=100, verbose_name="Auction Location")
     auction_price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name="Auction Price (zł)")
@@ -176,8 +328,8 @@ class ImportedCar(models.Model):
         super().save(*args, **kwargs)
     
     class Meta:
-        verbose_name = "Imported Car"
-        verbose_name_plural = "Imported Cars"
+        verbose_name = "Imported Car US"
+        verbose_name_plural = "Imported Car US"
         ordering = ['-auction_date']
         permissions = [
             ("view_net_profit", "Can view net profit"),
@@ -213,7 +365,6 @@ class CarImage(models.Model):
     ], verbose_name="Image Type")
     uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name="Uploaded At")
     def delete(self, *args, **kwargs):
-        # Delete the image file from the file system
         if self.image and os.path.exists(self.image.path):
             os.remove(self.image.path)
         super().delete(*args, **kwargs)
