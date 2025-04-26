@@ -57,6 +57,7 @@ class Contact(models.Model):
     message = models.TextField()
     checkmark = models.BooleanField(default=False, verbose_name="Acceped our regulations")
     MESSAGE_CATEGORY_CHOICES = [
+        ('select', 'Select Category ...'),
         ('import', 'Import a vehicle'),
         ('rent', 'Rent a vehicle'),
         ('sell', 'Sell a vehicle'),
@@ -67,7 +68,6 @@ class Contact(models.Model):
         ('general', 'General Inquiry'),
         ('support', 'Support Request'),
         ('feedback', 'Feedback'),
-        ('other', 'Other'),
     ]
     message_category = models.CharField(max_length=20, choices=MESSAGE_CATEGORY_CHOICES,null=True, blank=True, default='other')
     is_connected = models.BooleanField(default=False, null=True, blank=True)    
@@ -79,8 +79,6 @@ class Contact(models.Model):
 
 
     
-
-
 class ImportedVehicleAdvertisament(models.Model):
     brand = models.CharField(max_length=100, verbose_name="Brand")
     model = models.CharField(max_length=100, verbose_name="Model")

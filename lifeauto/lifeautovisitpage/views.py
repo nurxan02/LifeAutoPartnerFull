@@ -6,8 +6,12 @@ from rest_framework import generics
 # from rest_framework import viewsets
 from .models import Blog, Contact, ImportedVehicleAdvertisament, VehicleAdvertisementImage, CustomerInquiryImport
 from .serializers import BlogSerializer, ContactSerializer, ImportedVehicleAdvertisamentSerializer, VehicleAdvertisementImageSerializer, CustomerInquiryImportSerializer
+from django.http import JsonResponse
 
 
+def get_message_categories(request):
+    categories = dict(Contact.MESSAGE_CATEGORY_CHOICES)
+    return JsonResponse(categories)
 class ContactCreateView(generics.CreateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
@@ -16,7 +20,7 @@ class ContactCreateView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=201)  
-    
+
 
 class BlogListView(APIView):
     def get(self, request):

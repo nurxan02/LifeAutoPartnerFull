@@ -1,7 +1,7 @@
 const versionDiv = document.querySelector("div.float-right.d-none.d-sm-inline");
 if (versionDiv) {
   versionDiv.innerHTML = `
-        <a href="https://bio.link/nurxanmasimzade" 
+        <a href="https://nurxan02.github.io/MyPortfolio" 
            target="_blank" 
            style="color:rgb(222, 169, 24); text-decoration: none;">
             <i class="fab fa-waspp"></i> Developer by Nurkhan Masimzada

@@ -38,7 +38,7 @@ def export_to_excel(modeladmin, request, queryset):
     
     elif model_name == 'Car':
         headers = ['ID', 'Name', 'Brand', 'Category', 'Seating Capacity', 
-                  'Price Per Week', 'Is Active','Client', 'Image Path']
+                  'Price Per Week', 'Is Active', 'Client', 'Image Path']
         fields = ['id', 'name', 'brand', 'get_category_display', 'seating_capacity', 
                  'price_per_week', 'is_active','client', 'image']
     
@@ -55,7 +55,8 @@ def export_to_excel(modeladmin, request, queryset):
                     value = obj.get_category_display()
                 elif field == 'image':
                     value = str(obj.image) if obj.image else ""
-
+                elif field == 'client':
+                    value = str(value)
                 elif isinstance(value, bool):
                     value = "Yes" if value else "No"
                 row.append(value)

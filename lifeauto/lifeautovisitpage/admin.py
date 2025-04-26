@@ -4,7 +4,7 @@ from django.utils.html import format_html
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "tel", "message", "checkmark", "is_connected")
+    list_display = ("message_category","name", "email", "tel", "message", "checkmark", "is_connected")
     search_fields = ("name", "email", "tel")
     list_editable = ("checkmark","is_connected")
 

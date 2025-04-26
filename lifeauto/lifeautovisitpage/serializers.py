@@ -14,7 +14,7 @@ class BlogImageSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
-        fields = ["name", "email", "tel", "message", "checkmark"]
+        fields = ["name", "email", "tel", "message", "checkmark","message_category"]
 
 class ImportedVehicleAdvertisamentSerializer(serializers.ModelSerializer):
     class Meta:
