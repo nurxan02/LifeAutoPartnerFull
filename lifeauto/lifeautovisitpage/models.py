@@ -153,3 +153,45 @@ class CustomerInquiryImport(models.Model):
         verbose_name = "Customer Inquiry - Import"
         verbose_name_plural = "Customer Inquiry - Import"
 
+class AllCustomersCRM(models.Model):
+    name = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100)
+    email = models.EmailField(null=True, blank=True)
+    phone = models.CharField(max_length=20,null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
+    CHOICE_PLATFORMS=(
+        ('friend', 'Friend referance'),
+        ('website', 'Website'),
+        ('facebook', 'Facebook'),
+        ('instagram', 'Instagram'),
+        ('google', 'Google'),
+        ('x', 'X'),
+        ('whatsapp', 'WhatsApp'),
+        ('email', 'Email'),
+        ('phone', 'Phone'),
+        ('linkedin', 'LinkedIn'),
+        ('tiktok', 'TikTok'),
+        ('youtube', 'YouTube'),
+        ('snapchat', 'Snapchat'),
+        ('telegram', 'Telegram'),
+        ('pinterest', 'Pinterest'),
+        ('reddit', 'Reddit'),
+        ('twitch', 'Twitch'),
+        ('forum', 'Forum'),
+        ('blog', 'Blog'),
+        ('podcast', 'Podcast'),
+    )
+    platform = models.CharField(null=True, blank=True, choices=CHOICE_PLATFORMS)
+    is_contacted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+
+
+    def __str__(self):
+        return f"{self.name} - {self.email}"
+    
+    class Meta:
+        verbose_name = "All Customers CRM"
+        verbose_name_plural = "All Customers CRM"
+
+
