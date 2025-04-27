@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import generics
 # from django.shortcuts import render
 # from rest_framework import viewsets
-from .models import Blog, Contact, ImportedVehicleAdvertisament, VehicleAdvertisementImage, CustomerInquiryImport
-from .serializers import BlogSerializer, ContactSerializer, ImportedVehicleAdvertisamentSerializer, VehicleAdvertisementImageSerializer, CustomerInquiryImportSerializer
+from .models import Blog, Contact, ImportedVehicleAdvertisament, VehicleAdvertisementImage, CustomerInquiryImport,AllCustomersCRM
+from .serializers import BlogSerializer, ContactSerializer, ImportedVehicleAdvertisamentSerializer, VehicleAdvertisementImageSerializer, CustomerInquiryImportSerializer,AllCustomersCRMSerializer
 from django.http import JsonResponse
 
 
@@ -46,3 +46,6 @@ class CustomerInquiryImportView(generics.ListCreateAPIView):
     queryset = CustomerInquiryImport.objects.all()
     serializer_class = CustomerInquiryImportSerializer
 
+class AllCustomersCRMView(generics.ListCreateAPIView):
+    queryset = AllCustomersCRM.objects.all()
+    serializer_class = AllCustomersCRMSerializer

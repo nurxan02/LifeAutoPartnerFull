@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Blog, Contact, BlogImage, ImportedVehicleAdvertisament, VehicleAdvertisementImage, CustomerInquiryImport
+from .models import Blog, Contact, BlogImage, ImportedVehicleAdvertisament, VehicleAdvertisementImage, CustomerInquiryImport,AllCustomersCRM
 from django.utils.html import format_html
 
 @admin.register(Contact)
@@ -55,3 +55,10 @@ class CustomerInquiryImportAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email', 'phone')
     list_filter = ('created_at',)
     ordering = ('-created_at',)    
+@admin.register(AllCustomersCRM)
+class AllCustomersCRMAdmin(admin.ModelAdmin):
+    list_display = ('name', 'surname', 'phone', 'platform','is_contacted')
+    search_fields = ('name', 'surname', 'phone', 'platform')
+    list_filter = ('created_at','platform')
+    ordering = ('-created_at',)
+    list_editable =('is_contacted',)

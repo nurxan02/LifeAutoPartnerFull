@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Blog, BlogImage, Contact, ImportedVehicleAdvertisament, VehicleAdvertisementImage, CustomerInquiryImport
+from .models import Blog, BlogImage, Contact, ImportedVehicleAdvertisament, VehicleAdvertisementImage, CustomerInquiryImport,AllCustomersCRM
 
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,10 +25,11 @@ class VehicleAdvertisementImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = VehicleAdvertisementImage
         fields = '__all__'
-
 class CustomerInquiryImportSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerInquiryImport
         fields = '__all__'
-
-
+class AllCustomersCRMSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AllCustomersCRM
+        fields = '__all__'

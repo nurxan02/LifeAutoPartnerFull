@@ -192,7 +192,7 @@ class ClientPayments(admin.TabularInline):
 class ClientPenalties(admin.TabularInline):
     model=ClientPenalties
     extra=1
-    fields=('description','penalty_fee','created_at')
+    fields=('description','penalty_fee','status','created_at')
     readonly_fields = ('created_at',)
 
 @admin.register(Client)

@@ -185,13 +185,8 @@ class AllCustomersCRM(models.Model):
     is_contacted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
-
-
     def __str__(self):
-        return f"{self.name} - {self.email}"
-    
+        return f"{self.name} {self.surname} - {self.platform}"
     class Meta:
         verbose_name = "All Customers CRM"
         verbose_name_plural = "All Customers CRM"
-
-
