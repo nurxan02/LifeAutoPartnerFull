@@ -1,0 +1,51 @@
+.brand-link {
+  transition: 0.1s !important;
+}
+
+.brand-link img {
+  opacity: 1 !important;
+  box-shadow: 0px 0px 0px 0px #000000 !important;
+}
+.brand-text {
+  transition: 0.1s !important;
+}
+.brand-link:hover {
+  color: white !important;
+}
+.btn {
+  transition: 0.1s !important;
+}
+.btn:hover {
+  scale: 1.05 !important;
+  border-color: #ffffff !important;
+
+  box-shadow: 0px 0px 20px -10px #000000 !important;
+}
+.btn-outline-success:hover {
+  background-color: #28a745 !important;
+}
+.btn-danger:hover {
+  background-color: #bc1010 !important;
+}
+.btn-info:hover {
+  background-color: #b49d2a !important;
+}
+.dropdown-item:hover {
+  background-color: #b49d2a !important;
+  color: white !important;
+}
+.collapsible-header {
+  transition: 0.2s !important;
+}
+.collapsible-header:hover {
+  background-color: #f68e11 !important;
+}
+.navHeaderCustom {
+  color: #f68e11 !important;
+}
+#id_user_permissions_from option {
+  color: #000000 !important;
+}
+a.dropdown-item.active {
+  color: #ffffff !important;
+}
