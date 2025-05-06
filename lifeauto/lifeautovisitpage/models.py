@@ -181,7 +181,7 @@ class AllCustomersCRM(models.Model):
         ('blog', 'Blog'),
         ('podcast', 'Podcast'),
     )
-    platform = models.CharField(null=True, blank=True, choices=CHOICE_PLATFORMS)
+    platform = models.CharField(max_length=100, null=True, blank=True, choices=CHOICE_PLATFORMS)
     is_contacted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
