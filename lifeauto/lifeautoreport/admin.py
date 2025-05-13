@@ -58,6 +58,4 @@ class ReportAdmin(admin.ModelAdmin):
         if not obj.pk: 
             obj.employee = request.user
         super().save_model(request, obj, form, change)
-
-
 admin.site.register(Report, ReportAdmin)
