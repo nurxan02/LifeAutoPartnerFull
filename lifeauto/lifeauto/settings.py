@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'lifeautovisitpage',
     'lifeautocommersial',
     'lifeautorent',
+    'lifeautoreport',
     'corsheaders',
     'rest_framework',
 ]
@@ -126,9 +127,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 
@@ -142,10 +140,7 @@ STATICFILES_DIRS = [
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS = True
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -160,7 +155,6 @@ JAZZMIN_SETTINGS = {
     "copyright": "LifeAuto ",
     "site_logo": "logo/logofull.png",
     "site_logo_classes": "img-circle",
-    # "login_logo": None,
     "show_ui_builder": False,
     "search_model": ["lifeautoretail.Car", "lifeautopartner.RegistrationPartner"],
     "icons": {
@@ -177,10 +171,12 @@ JAZZMIN_SETTINGS = {
         "lifeautoretail.CustomerInquiry": "fa-solid fa-comments-dollar",
         "lifeautovisitpage.Blog": "fa-solid fa-percent",
         "lifeautovisitpage.Contact": "fa-solid fa-comment-sms",
+        "lifeautovisitpage.AllCustomersCRM": "fa-solid fa-users",
         "lifeautoimport.ImportedCar": "fa-solid fa-anchor",
         "lifeautoimport.Client": "fa-solid fa-address-card",
         "lifeautovisitpage.ImportedVehicleAdvertisament": "fa-solid fa-shop",
         "lifeautovisitpage.CustomerInquiryImport": "fa-solid fa-bell",
+        "lifeautoreport.Report": "fa-solid fa-clipboard",
 
     },
      "topmenu_links": [       
@@ -236,8 +232,10 @@ JAZZMIN_UI_TWEAKS = {
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
 
-
 # Security settings
-SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# CORS_ALLOW_ALL_ORIGINS = True
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# SECURE_SSL_REDIRECT = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
