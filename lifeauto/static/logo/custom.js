@@ -24,3 +24,30 @@ if (brandText) {
     }
   });
 })();
+
+document.querySelectorAll(".field-status").forEach((element) => {
+  const status = element.textContent.trim();
+  switch (status) {
+    case "Active":
+      element.style.fontWeight = "bold";
+      s;
+      element.style.color = "rgb(20, 219, 20)";
+      element.style.fontSize = "1.2em";
+      break;
+    case "Deactive":
+      element.style.color = "red";
+      element.style.fontWeight = "bold";
+      element.style.fontSize = "1.2em";
+      break;
+    case "Pending":
+      element.style.color = "yellow";
+      element.style.fontWeight = "bold";
+      element.style.fontSize = "1.2em";
+      break;
+    case "Expired":
+      element.style.color = "rgb(87, 87, 255)";
+      element.style.fontWeight = "bold";
+      element.style.fontSize = "1.2em";
+      break;
+  }
+});

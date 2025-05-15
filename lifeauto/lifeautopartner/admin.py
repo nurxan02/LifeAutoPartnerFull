@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RegistrationPartner
+from .models import RegistrationPartner,PartnerCarsList,PartnerCarsLicenses
 from django.http import HttpResponse
 from django.db.models import Model
 from openpyxl import Workbook
@@ -62,3 +62,17 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ("first_name", "last_name", "email", "nationality")
     list_filter = ("nationality", "is_student", "has_company", "is_over_26")
     actions = [export_to_excel]
+
+
+class PartnerCarsLicensesInline(admin.TabularInline):
+    model = PartnerCarsLicenses
+    extra = 1  
+    fields = ('partner_car', 'city', 'status')
+    readonly_fields = ('partner_car', )
+
+@admin.register(PartnerCarsList)
+class PartnerCarsListAdmin(admin.ModelAdmin):
+    list_display = ("brand", "model", "purpose", "sign_number", "vin", "owner", "client", "status")
+    search_fields = ("brand", "model", "vin", "owner", "client")
+    list_filter = ("brand", "model", "purpose")
+    inlines = [PartnerCarsLicensesInline]

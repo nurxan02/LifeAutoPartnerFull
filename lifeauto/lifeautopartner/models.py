@@ -228,3 +228,56 @@ class RegistrationPartner(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email})"
+
+class PartnerCarsList(models.Model):
+    brand = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    purpose = models.CharField(max_length=100)
+    sign_number = models.CharField(max_length=20)
+    vin = models.CharField(max_length=17, unique=True)
+    owner = models.CharField(max_length=255)
+    client = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True )
+    STATUS_CHOICES = [        
+        ("Active", "Active"),
+        ("Deactive", "Deactive"),
+        ("Pending", "Pending"),
+        ("Expired", "Expired"),
+        ]
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES, verbose_name="License Status")
+
+    def __str__(self):
+        return f"{self.brand} {self.model} - ({self.sign_number})"
+    
+class PartnerCarsLicenses(models.Model):
+    partner_car = models.ForeignKey(PartnerCarsList, on_delete=models.CASCADE)
+    CITY_CHOICES = [
+    # Masovian Voivodeship (Mazowieckie)
+    ("Warsaw - Masovian", "Warsaw - Masovian"),
+    ("Krakow - Lesser Poland", "Krakow - Lesser Poland"),
+    # Silesian Voivodeship (Śląskie)
+    ("Katowice - Silesian", "Katowice - Silesian"),
+    ("Gliwice - Silesian", "Gliwice - Silesian"),
+    ("Zabrze - Silesian", "Zabrze - Silesian"),
+    ("Bytom - Silesian", "Bytom - Silesian"),
+    ("Ruda Śląska - Silesian", "Ruda Śląska - Silesian"),
+    ("Tychy - Silesian", "Tychy - Silesian"),
+    ("Dąbrowa Górnicza - Silesian", "Dąbrowa Górnicza - Silesian"),
+    ("Chorzów - Silesian", "Chorzów - Silesian"),
+    ("Sosnowiec - Silesian", "Sosnowiec - Silesian"),
+    ("Częstochowa - Silesian", "Częstochowa - Silesian"),
+    ("Bielsko-Biała - Silesian", "Bielsko-Biała - Silesian"),
+    ]
+    city = models.CharField(max_length=100, choices=CITY_CHOICES)
+    STATUS_CHOICES = [
+        ("Licensed", "Licensed"),
+        ("Unlicensed", "Unlicensed"),
+        ("Pending", "Pending"),
+        ("Expired", "Expired"),
+    ]
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.city} - {self.status}"
